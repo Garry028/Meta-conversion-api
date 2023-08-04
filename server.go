@@ -30,6 +30,7 @@ type Payload struct {
 
 // Function to handle the HTTP POST request for Purchase Events
 func handlePurchaseEvent(w http.ResponseWriter, r *http.Request) {
+	// means only the post methid is allowed else throw error
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -56,7 +57,6 @@ func handlePurchaseEvent(w http.ResponseWriter, r *http.Request) {
 		hashedEventName := hashEventName(normalizedEventName)
 
 		// Simulate sending the normalized and hashed event data to Facebook
-		// Replace this part with your actual logic to send data to Facebook.
 		fmt.Printf("Sending event to Facebook: %s\n", hashedEventName)
 	}
 
