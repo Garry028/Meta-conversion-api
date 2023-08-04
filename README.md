@@ -20,22 +20,12 @@ Before running the API, make sure you have the following installed:
 
 1. Replace the dummy data in the provided payload with your actual Facebook Pixel ID, access key, and test event code.
 
-2. Start the Golang API webserver by running the following command in the terminal:
-
+2. Start the Golang API webserver by running the following command in the terminal: go run "file path"
 
 3. The API will be running at http://localhost:8080.
 
-4. To send a Purchase Event to Facebook Pixel, make a POST request to the API endpoint '/purchase-event' with the payload containing the necessary data in the "mable" format.
+4. To send a Purchase Event to Facebook Pixel, make a POST request to the API endpoint '/post/facebook' with the payload containing the necessary data in the "mable" format.
 
 5. The API will validate the payload, perform normalization and hashing as per Facebook API requirements, and send the event data to the Facebook Pixel.
 
 6. The API will respond with a JSON object indicating the status of the event submission.
-
-## Customize and Extend
-
-You can extend the API functionality to handle other types of events or add more validation and processing logic as needed. The provided code is a basic implementation; feel free to enhance it based on your specific requirements.
-
-## Security
-
-Ensure that you handle sensitive information (such as Facebook access keys) securely. Implement appropriate security measures to protect data in a production environment.
-
