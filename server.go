@@ -1,10 +1,13 @@
 package main
 
 import (
+	"crypto/sha1"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 // Define a struct to represent the destination settings
@@ -48,7 +51,7 @@ func handlePurchaseEvent(w http.ResponseWriter, r *http.Request) {
 
 	// Loop through the events and perform any required normalization and hashing
 	for _, event := range payload.Events {
-		// Do normalization and hashing for each event, if needed
+		// Do normalization and hashing for each event
 		normalizedEventName := normalizeEventName(event.EventName)
 		hashedEventName := hashEventName(normalizedEventName)
 
@@ -67,7 +70,7 @@ func handlePurchaseEvent(w http.ResponseWriter, r *http.Request) {
 	// For this example, we will just print the data to the console.
 	fmt.Println("Sending data to Facebook: ", data.Encode())
 
-	// Provide a response back to the client (you can customize this based on your requirements)
+	// Provide a response back to the client
 	response := map[string]interface{}{
 		"status":  "success",
 		"message": "Purchase events sent to Facebook",
@@ -78,16 +81,19 @@ func handlePurchaseEvent(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonResponse)
 }
 
-// Helper function to perform normalization on event names (Replace this with your actual normalization logic)
+// Helper function to perform normalization on event names
 func normalizeEventName(eventName string) string {
-	// Placeholder normalization logic, you should implement your own
-	return eventName
+	//will convert the event name to lowercase.
+	return strings.ToLower(eventName)
 }
 
-// Helper function to perform hashing on event names (Replace this with your actual hashing logic)
+// Helper function to perform hashing on event names
 func hashEventName(eventName string) string {
-	// Placeholder hashing logic, you should implement your own
-	return eventName
+	//will use a simple hash function (SHA-1) from the crypto package.
+	hasher := sha1.New()
+	hasher.Write([]byte(eventName))
+	hashed := hex.EncodeToString(hasher.Sum(nil))
+	return hashed
 }
 
 func main() {
@@ -98,22 +104,3 @@ func main() {
 	fmt.Println("Server is running on http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }
-
-/*
-{
-  "destinationSettings": {
-    "pixelId": "dummy_pixel_id",
-    "testEventCode": "dummy_test_event_code",
-    "accessKey": "dummy_access_key"
-  },
-  "events": [
-    {
-      "eventName": "dummy_event_1"
-    },
-    {
-      "eventName": "dummy_event_2"
-    }
-  ]
-}
-
-*/
